@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="referrer" content="origin">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <title>verilog基本语法</title>
+    <link rel="shortcut icon" href="#"/>
+
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/LongCang.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/Monda.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/NotoSansSC.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/Playball.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/PTMono.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/RobotoSlab.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/Rosario.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/UbuntuMono.css">
+
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/post.css">
+    
+        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/night.css">
+    
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/jquery-3.4.1.min.js"></script>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <a id="cover"></a>
+    <div id="header">
+    <div class="header">
+        <div class="vertical">
+            <div class="inner">
+                <h1 class="header-subtitle">verilog基本语法</h1>
+                <div class="header-subinfo">
+                    <p class="article-info-text">
+                        <span>
+                            <i class="iconfont icon-time"></i> 发表时间：2021-10-07
+                        </span>
+                        
+                            <span id="/2021/10/07/verilog基本语法/" class="leancloud_visitors" data-flag-title="verilog基本语法">
+                                <i class="iconfont icon-browse"></i> 阅读：<sapn class="leancloud-visitors-count"></span>
+                            </span>
+                        
+                        <span>
+                            <i class="iconfont icon-interactive"></i> 评论：<span class="valine-comment-count" data-xid="/2021/10/07/verilog基本语法/"></span>
+                        </span>  
+                    </p>                 
+                </div>
+            </div>
+        </div>
+        <canvas id="articleHeaderCanvas"></canvas>
+    </div>
+</div>
+    <div id="container">
+    <div id="content">
+        <div id="article">
+    <div class="toc"></div>
+    <div class="article-body">
+        <h1 id="硬件描述语言"><a href="#硬件描述语言" class="headerlink" title="硬件描述语言"></a>硬件描述语言</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>.硬件描述语言 verilog、VHDL、system verilog、chisel（新语言）</span><br><span class="line"><span class="number">2</span><span class="variable">.1</span>可综合描述：综合tools能过够把verilog描述转化（complie）为基本的数字电路底层<span class="keyword">cell</span>（与或非gate，寄存器等）的描述，如 <span class="keyword">assign</span> = a &amp; b</span><br><span class="line"><span class="number">2</span><span class="variable">.2</span>不可综合描述：综合tools能过够把verilog描述转化（complie）为基本的数字电路底层<span class="keyword">cell</span>（与或非gate，寄存器等）的描述，如 <span class="built_in">$display</span>(<span class="string">&quot;Hello world&quot;</span>)</span><br><span class="line"><span class="number">3</span>.常用的仿真工具</span><br><span class="line">    modelsim/questasim（Mentor）</span><br><span class="line">    VCS（Synopsys）</span><br><span class="line">    NC-verilog（Candence）</span><br><span class="line"><span class="number">4</span><span class="variable">.verilog</span>设计的物理实现（可综合verilog描述）</span><br><span class="line">    综合（compile）后在IC芯片实现</span><br><span class="line">    综合（compile）后在FPGA上实现</span><br></pre></td></tr></table></figure>
+
+<h1 id="数字电路设计方法学"><a href="#数字电路设计方法学" class="headerlink" title="数字电路设计方法学"></a>数字电路设计方法学</h1><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bottom-up:从底层<span class="keyword">cell</span>，逐渐网上搭建功能</span><br><span class="line">top-down:从顶层结构，协议/算法开始，通过模块（<span class="keyword">module</span>）的层次化设计，向下逐步划分功能模块；再细分各功能模块的功能与IO，从而实现一个复杂数字逻辑功能。</span><br><span class="line"></span><br><span class="line">目前，基于verilog的数字电路设计通常使用 “top-down”的设计方法。因为数字IP/IC的规模很大，需要先抽象思维，再细化</span><br><span class="line"></span><br><span class="line">数字设计与软件设计还是不同的，需要 think in hardware，写code前需要先设计电路结构</span><br></pre></td></tr></table></figure>
+
+<h1 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h1><h3 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">用于定义code中的各种名字，比如：信号，<span class="keyword">module</span>，define，<span class="keyword">parameter</span></span><br><span class="line">    </span><br><span class="line">组成：字符，数字，下划线</span><br><span class="line">首字母必须是字母或下划线</span><br><span class="line">标识符区分大小写</span><br><span class="line"></span><br><span class="line">信号名字的选取要养成与信号功能对应</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">verilog与大多数其他类型代码一样，预定义了一些关键字，在程序中有特殊含义，是不能被user当作普通标识符的 </span><br><span class="line"></span><br><span class="line">比如：<span class="keyword">module</span>，<span class="keyword">wire</span>,<span class="keyword">reg</span>,<span class="keyword">input</span>,<span class="keyword">output</span>,<span class="keyword">inout</span>,<span class="keyword">assign</span>,<span class="keyword">begin</span>-<span class="keyword">end</span>,<span class="keyword">for</span>,<span class="keyword">fork</span>-<span class="keyword">join</span>,char,<span class="keyword">integer</span>,<span class="keyword">tri0</span>,<span class="keyword">tri1</span>,...</span><br><span class="line">    </span><br><span class="line">完整的关键字定义，见verilog标准：IEEE Std <span class="number">1364</span>-<span class="number">2001</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">定义模块</span><br><span class="line"><span class="keyword">module</span> 模块名(模块端口名表)</span><br><span class="line">    定义串口；功能描述</span><br><span class="line"><span class="keyword">endmodule</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">连续赋值语句：</span><br><span class="line"><span class="keyword">assign</span> 目标变量名 = 驱动表达式</span><br><span class="line"><span class="keyword">assign</span> [延时] 目标变量名 = 驱动表达式 <span class="comment">//assign [#6] r1=A &amp; B;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">注释一行代码“<span class="comment">//”</span></span><br><span class="line"><span class="comment">//这样注释</span></span><br><span class="line"></span><br><span class="line">注释一段代码<span class="string">&quot;/*...*/</span></span><br><span class="line"><span class="string">/*这样</span></span><br><span class="line"><span class="string">注释*/</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据物理类型"><a href="#数据物理类型" class="headerlink" title="数据物理类型"></a>数据物理类型</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">“线”性数据：用于连续赋值语句（<span class="keyword">assign</span>）描述组合逻辑或<span class="keyword">module</span>见的信号连接线</span><br><span class="line">    <span class="keyword">wire</span>：线性，可综合</span><br><span class="line">    	<span class="keyword">wire</span> a;</span><br><span class="line">   	 	<span class="keyword">wire</span> [<span class="number">3</span>:<span class="number">0</span>] b;</span><br><span class="line">    	<span class="keyword">wire</span> [<span class="number">7</span>:<span class="number">0</span>] c;</span><br><span class="line">    	<span class="keyword">assign</span> a = <span class="number">1&#x27;b0</span>;</span><br><span class="line">    	<span class="keyword">assign</span> c = <span class="number">8&#x27;h5a</span>;</span><br><span class="line">    <span class="keyword">tri0</span>/<span class="keyword">tri1</span>:带下拉/上拉电阻的线性，没有驱动时，会有默认值<span class="number">0</span>/<span class="number">1</span>，一般可综合代码不使用</span><br><span class="line">    	<span class="keyword">tri0</span> s0;</span><br><span class="line">    	<span class="keyword">tri1</span> [<span class="number">20</span>:<span class="number">0</span>] s1;</span><br><span class="line">寄存器类型：除了<span class="keyword">wire</span>/<span class="keyword">tri0</span>/<span class="keyword">tri1</span>外的其他数据类型，基本都属于寄存器类型，用于过程赋值语句（<span class="keyword">always</span>,<span class="keyword">initial</span>）描述组合逻辑或时序逻辑</span><br><span class="line">    <span class="keyword">reg</span>：</span><br><span class="line">    	<span class="keyword">reg</span>型变量定义</span><br><span class="line"> 		<span class="keyword">reg</span> 变量<span class="number">1</span>,变量<span class="number">2</span>...</span><br><span class="line">		<span class="keyword">reg</span> [msb,lsb] 变量 <span class="number">1</span>,变量<span class="number">2</span></span><br><span class="line">    <span class="keyword">real</span></span><br><span class="line">    <span class="keyword">integer</span> <span class="comment">// 等价于 reg [31:0]</span></span><br><span class="line">    <span class="keyword">time</span></span><br><span class="line">    <span class="keyword">realtime</span></span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">    在可综合verilog中，很少是有除了reg以外的寄存器类型，常用于行为级建模（behavior model）</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    举例：</span><br><span class="line">    <span class="keyword">wire</span> [<span class="number">3</span>:<span class="number">0</span>] din;</span><br><span class="line">    <span class="keyword">reg</span> [<span class="number">3</span>:<span class="number">0</span>] d0;</span><br><span class="line">    <span class="keyword">reg</span> d1;</span><br><span class="line">    <span class="keyword">initial</span> <span class="keyword">begin</span> <span class="comment">//过程赋值语句</span></span><br><span class="line">        d1 = <span class="number">0</span>;</span><br><span class="line">        #<span class="number">10</span>;</span><br><span class="line">        d1 = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">always</span>@(<span class="keyword">posedge</span> clk)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            <span class="keyword">if</span>(d1) d0&lt;=din;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    在verilog中，<span class="keyword">reg</span>类型的变量也可以描述组合逻辑</span><br><span class="line">    <span class="keyword">reg</span> [<span class="number">3</span>:<span class="number">0</span>] dc;</span><br><span class="line">    <span class="keyword">always</span>@(*)<span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(d1) </span><br><span class="line">            dc=<span class="number">4&#x27;h4</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            dc=<span class="number">4&#x27;h8</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<h3 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h3><h5 id="一维标量类型（常量）"><a href="#一维标量类型（常量）" class="headerlink" title="一维标量类型（常量）"></a>一维标量类型（常量）</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">整数型（需要明确指定数据位宽）</span><br><span class="line">	<span class="number">16&#x27;d100</span>；<span class="comment">//10进制表示的“100”</span></span><br><span class="line">	<span class="number">16&#x27;h64</span>;<span class="comment">//16进制表示的“100”</span></span><br><span class="line">	<span class="number">16&#x27;b0110_0100</span>;<span class="comment">//2进制表示的“100”</span></span><br><span class="line">实数型（可综合verilog目前不使用）</span><br><span class="line">	<span class="number">1</span><span class="variable">.11</span>；</span><br><span class="line">	<span class="number">2</span><span class="variable">.22</span>；</span><br><span class="line">字符型（每个字符按<span class="number">8</span><span class="keyword">bit</span> ASII码的整型存储）</span><br><span class="line">	<span class="string">&quot;verilog&quot;</span> <span class="comment">//占用56个bits</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="一维标量类型（变量）"><a href="#一维标量类型（变量）" class="headerlink" title="一维标量类型（变量）"></a>一维标量类型（变量）</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">整数型（需要明确指定数据位宽）</span><br><span class="line">    <span class="keyword">wire</span> [<span class="number">3</span>:<span class="number">0</span>] da,db;		<span class="comment">//unsigned</span></span><br><span class="line">    <span class="keyword">wire</span> <span class="keyword">signed</span> [<span class="number">9</span>:<span class="number">0</span>] s0;	<span class="comment">//signed 默认使用二进制补码表示</span></span><br><span class="line">    <span class="keyword">wire</span> [<span class="number">15</span>:<span class="number">0</span>] c0;</span><br><span class="line">    <span class="keyword">assign</span> c0=<span class="string">&quot;ab&quot;</span>;			<span class="comment">//16&#x27;h6162</span></span><br><span class="line">    <span class="keyword">assign</span> da=db+<span class="number">4&#x27;b1</span>;</span><br><span class="line">实数型（目前不可综合）</span><br><span class="line">    <span class="keyword">real</span> f0,f1;</span><br><span class="line">    <span class="keyword">always</span>@(*)</span><br><span class="line">        <span class="keyword">begin</span></span><br><span class="line">            <span class="keyword">if</span>(da==<span class="number">0</span>)</span><br><span class="line">                f0=<span class="number">1</span><span class="variable">.11</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                f0=<span class="number">2</span><span class="variable">.22</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="多维标量类型（变量）"><a href="#多维标量类型（变量）" class="headerlink" title="多维标量类型（变量）"></a>多维标量类型（变量）</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wire</span> [<span class="number">3</span>:<span class="number">0</span>] array_0 [<span class="number">0</span>:<span class="number">7</span>];<span class="comment">//8个4bit数组成的数组</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">13</span>:<span class="number">0</span>] array_1 [<span class="number">0</span>:<span class="number">255</span>];<span class="comment">//256个14bit数组成的数组</span></span><br><span class="line"><span class="keyword">integer</span> array_2 [<span class="number">0</span>:<span class="number">15</span>];<span class="comment">//16个整数组成的数组</span></span><br><span class="line"><span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] array_3 [<span class="number">0</span>:<span class="number">15</span>] [<span class="number">0</span>：<span class="number">255</span>];<span class="comment">//多维数组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> array_0[<span class="number">0</span>]=array_1[<span class="number">255</span>][<span class="number">7</span>:<span class="number">4</span>];</span><br><span class="line"><span class="keyword">always</span>@(<span class="keyword">posedge</span> clk)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        array_1[<span class="number">128</span>]&lt;=array_1[<span class="number">127</span>];</span><br><span class="line">        array_1[<span class="number">129</span>]&lt;=&#123;<span class="number">6&#x27;h0</span>,array_3[<span class="number">15</span>][<span class="number">255</span>]&#125;;<span class="comment">//array_3的每个只有8bit，在高位补6bit的0</span></span><br><span class="line">    <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><h5 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">按<span class="keyword">bit</span>位逻辑操作：&amp;(<span class="keyword">and</span>)、|(<span class="keyword">or</span>)、^(<span class="keyword">xor</span>)、~(inv)</span><br><span class="line"></span><br><span class="line">特殊用法：</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">3</span>:<span class="number">0</span>] a,b,d;</span><br><span class="line"><span class="keyword">wire</span> d0,d1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> a=<span class="number">4&#x27;b0011</span>;</span><br><span class="line"><span class="keyword">assign</span> b=<span class="number">4&#x27;b0101</span>;</span><br><span class="line"><span class="keyword">assign</span> d=<span class="number">4&#x27;b0</span>;</span><br><span class="line"><span class="keyword">assign</span> d0=|a;<span class="comment">//1&#x27;b1:d0=a[0]|a[1]|a[2]|a[3];将a的每一位做或运算，结果只有1bit</span></span><br><span class="line"><span class="keyword">assign</span> d1=&amp;b;<span class="comment">//1&#x27;b0:d1=b[0]&amp;b[1]&amp;b[2]&amp;b[3];将b的每一位做与运算，结果只有1bit</span></span><br><span class="line"></span><br><span class="line">整体逻辑操作：&amp;&amp;、||、!、==、!=</span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> [<span class="number">3</span>:<span class="number">0</span>] a,b,c,d;</span><br><span class="line"><span class="keyword">wire</span> c0<span class="variable">.cc1</span><span class="variable">.c2</span><span class="variable">.c3</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> a=<span class="number">4&#x27;b0011</span>;</span><br><span class="line"><span class="keyword">assign</span> b=<span class="number">4&#x27;b0101</span>;</span><br><span class="line"><span class="keyword">assign</span> c=<span class="number">4&#x27;b0000</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> c0=a&amp;&amp;b;<span class="comment">//将a和b看成一个整体，不是0即为1，然后1bit相与，a为1，b也为1，c0=1b&#x27;1;</span></span><br><span class="line"><span class="keyword">assign</span> c1=a||b;<span class="comment">//c1=1&#x27;b1;</span></span><br><span class="line"><span class="keyword">assign</span> c2=!a;<span class="comment">//1&#x27;b0;</span></span><br><span class="line"><span class="keyword">assign</span> c3=!c;<span class="comment">//1&#x27;b1;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="条件运算符（描述mux）"><a href="#条件运算符（描述mux）" class="headerlink" title="条件运算符（描述mux）"></a>条件运算符（描述mux）</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] a0,a1;</span><br><span class="line"><span class="keyword">wire</span> sel;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] out;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> out=(sel)?a0:a1;<span class="comment">//sel=1时out=a0,sel=0时，out=a1</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="bit位选择-拼接"><a href="#bit位选择-拼接" class="headerlink" title="bit位选择[]/拼接{}"></a>bit位选择[]/拼接{}</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wire</span> [<span class="number">31</span>:<span class="number">0</span>] a0,a1;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">17</span>:<span class="number">0</span>] out0,out1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> out0=&#123;a1[<span class="number">31</span>],a0[<span class="number">31</span>],a1[<span class="number">0</span>+:<span class="number">8</span>],a0[<span class="number">15</span>:<span class="number">8</span>]&#125;;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">a1[0+:8]：从a1的0bit开始高位取，一共取8bit</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">assign</span> out1=&#123;a1[<span class="number">31</span>],a0[<span class="number">31</span>],a1[<span class="number">7</span>:<span class="number">0</span>],a0[<span class="number">8</span>+:<span class="number">8</span>]&#125;;<span class="comment">//out1=out0</span></span><br><span class="line"><span class="comment">//在实际电路中其实就是线的排序</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="算数运算符-、-、-、-lt-、-gt-、-lt-、-gt-、-、"><a href="#算数运算符-、-、-、-lt-、-gt-、-lt-、-gt-、-、" class="headerlink" title="算数运算符+、-、*、&lt;、&gt;、&lt;=、&gt;=、/、%"></a>算数运算符+、-、*、&lt;、&gt;、&lt;=、&gt;=、/、%</h5><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wire</span> [<span class="number">13</span>:<span class="number">0</span>] a0,a1,a2;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">13</span>:<span class="number">0</span>] b0,b1,b2,div;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">15</span>:<span class="number">0</span>] sum;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">15</span>:<span class="number">0</span>] sub;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">27</span>:<span class="number">0</span>] mul;<span class="comment">//为了保证计算结果不溢出，需要仔细定义数据的位宽</span></span><br><span class="line"><span class="keyword">wire</span> big,less;</span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> sum=a0+a1+b0;</span><br><span class="line"><span class="keyword">assign</span> sub=a0-a1;</span><br><span class="line"><span class="keyword">assign</span> mul=a2*b2;</span><br><span class="line"><span class="keyword">assign</span> div=b1/a1;</span><br><span class="line"><span class="keyword">assign</span> big=(a0&gt;b0)?<span class="number">1&#x27;b1</span>:<span class="number">1&#x27;b0</span>;</span><br><span class="line"><span class="keyword">assign</span> less=(a0&lt;b0)?<span class="number">1&#x27;b1</span>:<span class="number">1&#x27;b0</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="条件语句-if-else-if-else-if-else-if-else-case"><a href="#条件语句-if-else-if-else-if-else-if-else-case" class="headerlink" title="条件语句 if-else/if-else if-else if-else/case"></a>条件语句 if-else/if-else if-else if-else/case</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//if else</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">wire</span> sel</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">1</span>:<span class="number">0</span>] dout;</span><br><span class="line"><span class="keyword">wire</span> [<span class="number">1</span>:<span class="number">0</span>] dout2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(*) </span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">if</span>(sel) </span><br><span class="line">            dout=<span class="number">2&#x27;d2</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            dout=<span class="number">2&#x27;d1</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assign</span> dout2=(sel)?<span class="number">2&#x27;d2</span>:<span class="number">2&#x27;d1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//case</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">input</span> <span class="keyword">wire</span> [<span class="number">2</span>:<span class="number">0</span>] din;</span><br><span class="line"><span class="keyword">output</span> <span class="keyword">reg</span> [<span class="number">7</span>:<span class="number">0</span>] dout;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span>@(*)</span><br><span class="line">    <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">case</span>(din)</span><br><span class="line">            <span class="number">3&#x27;b000</span>:dout=<span class="number">8&#x27;h01</span>;</span><br><span class="line">            <span class="number">3&#x27;b001</span>:dout=<span class="number">8&#x27;h02</span>;</span><br><span class="line">            <span class="number">3&#x27;b010</span>:dout=<span class="number">8&#x27;h03</span>;</span><br><span class="line">            <span class="number">3&#x27;b011</span>:dout=<span class="number">8&#x27;h04</span>;</span><br><span class="line">            <span class="number">3&#x27;b100</span>:dout=<span class="number">8&#x27;h05</span>;</span><br><span class="line">            <span class="number">3&#x27;b101</span>:dout=<span class="number">8&#x27;h06</span>;</span><br><span class="line">            <span class="number">3&#x27;b110</span>:dout=<span class="number">8&#x27;h07</span>;</span><br><span class="line">            <span class="number">3&#x27;b111</span>:dout=<span class="number">8&#x27;h08</span>;</span><br><span class="line">        <span class="keyword">endcase</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<h3 id="示例仿真–hello-verilog"><a href="#示例仿真–hello-verilog" class="headerlink" title="示例仿真–hello verilog"></a>示例仿真–hello verilog</h3><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">parameter</span> clk_cyc = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">reg</span> clk,rstn;</span><br><span class="line"><span class="keyword">reg</span> [<span class="number">31</span>:<span class="number">0</span>] a;</span><br><span class="line"></span><br><span class="line"><span class="keyword">always</span> <span class="variable">#(clk_cyc/2)</span> clk=!clk;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">		<span class="built_in">$display</span>(<span class="string">&quot;hello verilog.\n&quot;</span>);</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">initial</span> <span class="keyword">begin</span></span><br><span class="line">		</span><br><span class="line">		clk = <span class="number">0</span>;rstn = <span class="number">0</span>;</span><br><span class="line">		@(<span class="keyword">posedge</span> clk);</span><br><span class="line">		a = <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">repeat</span>(<span class="number">5</span>)@(<span class="keyword">negedge</span> clk);</span><br><span class="line">		<span class="built_in">$finish</span>();</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line">		</span><br><span class="line"><span class="keyword">endmodule</span></span><br><span class="line"><span class="comment">/*这个仿真为时序电路*/</span></span><br></pre></td></tr></table></figure>
+
+
+        <p class="suffix-end">__END__</p>
+        <div class="suffix-box">
+            <div class="suffix-box-left">
+                <img src="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/image/sidebar/avatar.jpg" alt="涵涵宝贝">
+            </div>
+            <div class="suffix-box-right">
+                <span class="suffix-box-title">文章作者</span>：涵涵宝贝
+                <br>
+                <span class="suffix-box-title">文章出处</span>：<a href="/2021/10/07/verilog%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" target="_blank">verilog基本语法</a>
+                <br>
+                <span class="suffix-box-title">作者签名</span>：简单地活着, 肆意又精彩.
+                <br>
+                <span class="suffix-box-title">关于主题</span>：<a href="https://github.com/first19326/Hexo-LiveForCode" target="_blank">Hexo - Live For Code</a>
+                <br>
+                <span class="suffix-box-title">版权声明</span>：文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" title="BY-NC-SA" target="_blank">BY-NC-SA</a> 许可协议，转载请注明出处
+                <br>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+    <div class="article-footer">
+        
+        
+        <div class="article-prev-next">
+            
+            
+        </div>
+    </div>
+    
+    <div class="article-comments">
+        <div class="comments-title">
+            评论列表
+        </div>
+        <div class="comments-content">
+        </div>
+    </div>
+
+</div>
+
+    </div>
+</div>
+    <div id="footer"></div>
+    <div id="sidebar">
+    <div class="menu-wrap" style="display:none;">
+        <nav class="menu">
+            <div class="menu-introduce"> 
+                <div class="introduce-avatar"></div> 
+                <div class="introduce-info"> 
+                    <div class="introduce-user"><span></span></div>        
+                </div> 
+            </div> 
+            <div class="menu-list">
+                <ul></ul> 
+            </div> 
+            <div class="menu-link"></div> 
+        </nav>
+        <button class="menu-button-close"></button>
+        <div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+                <path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>
+            </svg>
+        </div>
+    </div>
+    <button class="menu-button-open">MENU</button>
+    <div class="menu-cover"></div>
+</div>
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/search.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/iscroll.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/instantsearch.min.js"></script>
+<div class="search-window">
+    <div class="search-content">
+        <div class="search-content-icon">
+            <i class="iconfont icon-search"></i>
+        </div>
+        <div id="search-input" class="search-input"></div>
+    </div>
+
+    <div class="search-scroll">
+        <div class="search-result">
+            <div id="search-stats" class="search-stats"></div>
+            <div id="search-hits"></div>
+            <div id="search-pagination" class="search-pagination"></div>
+        </div>
+    </div>
+
+    <span class="search-close-icon">
+        <i class="iconfont icon-close"></i>
+    </span>
+</div>
+    <div id="tools">
+    <div class="progressbar-top"></div>
+
+    
+        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/APlayer.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/APlayer.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/Meting.min.js"></script>
+        <meting-js id="3778678" lrcshow="false" server="netease" type="playlist" fixed="true" autoplay="false" loop="all" order="random" preload="auto" volume="0.67" mutex="true"></meting-js>
+    
+    
+    <div class="wrap-right"></div>
+    <div class="loading"></div>
+</div>
+    <script>
+    window.config = {
+        GitHubUserName     : 'first19326',
+        GitHubRepositories : 'Hexo-LiveForCode',
+
+        BlogUser      : '涵涵宝贝',
+        BlogAvatar    : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/image/sidebar/avatar.jpg',
+        BlogStartDate : '2021-9-13',
+
+        WebsiteTitleBlur         : '(◍´꒳`◍) Hi, 欢迎来到涵涵涵宝贝的blog',
+        WebsiteTitleBlurTimeOut  : 500,
+        WebsiteTitleFocus        : '(*´∇｀*) 欢迎回来!',
+        WebsiteTitleFocusTimeOut : 1000,
+        WebsiteFavicon           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/image/website/logo.png',
+
+        ProgressBar: {
+            id       : 'topProgressBar',
+            color    : '#77B6FF',
+            height   : '2px',
+            duration : 0.2
+        },
+
+        Loading: {
+            rebound: {
+                tension  : 16,
+                friction : 5
+            },
+            spinner: {
+                id     : 'spinner',
+                radius : 90,
+                sides  : 3,
+                depth  : 4,
+                colors : {
+                    background : '#F0F0F0',
+                    stroke     : '#272633',
+                    base       : '',
+                    child      : '#272633'
+                },
+                alwaysForward : true,
+                restAt        : 0.5,
+                renderBase    : false
+            }
+        },
+
+        HomeHeaderAnimationRendered : true,
+        HomeHeaderAnimation         : {
+            radius      : 15,
+            density     : 0.2,
+            color       : 'rgba(255, 255, 255, .2)',
+            clearOffset : 0.3
+        },
+
+        ArticleHeaderAnimationRendered : false,
+        ArticleHeaderAnimation         : {
+            triW                  : 14,
+            triH                  : 20,
+            neighbours            : [
+                
+                    'side',
+                
+                    'top',
+                
+                    'bottom',
+                
+            ],
+            speedTrailAppear      : 0.1,
+            speedTrailDisappear   : 0.1,
+            speedTriOpen          : 1,
+            trailMaxLength        : 30,
+            trailIntervalCreation : 100,
+            delayBeforeDisappear  : 2,
+            colors                : [
+                
+                    '#96EDA6',
+                
+                    '#5BC6A9',
+                
+                    '#38668C',
+                
+                    '#374D84',
+                
+                    '#BED5CB',
+                
+                    '#62ADC6',
+                
+                    '#8EE5DE',
+                
+                    '#304E7B',
+                
+            ]
+        },
+
+        BackAnimationRendered          : true,
+        IEBrowserBackAnimationRendered : false,
+        BackAnimation                  : {
+            colorSaturation  : '60%',
+            colorBrightness  : '50%',
+            colorAlpha       : 0.5,
+            colorCycleSpeed  : 5,
+            verticalPosition : 'random',
+            horizontalSpeed  : 200,
+            ribbonCount      : 3,
+            strokeSize       : 0,
+            parallaxAmount   : -0.2,
+            animateSections  : true
+        },
+
+        HomeHeaderImage : [
+            
+                'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/image/header/home.jpg',
+            
+                'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/image/header/home.jpeg',
+            
+        ],
+        HomeBannerText  : '好好搞技术',
+
+        ArticleHeaderImage : [
+            
+                'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/image/header/article.jpg',
+            
+        ],
+
+        OtherBannerText : '',
+
+        MenuList : [
+            
+                {
+                    name   : '首页',
+                    href   : '/',    
+                    target : '',
+                    class  : ''
+                },
+            
+                {
+                    name   : '标签',
+                    href   : '/tag',    
+                    target : '',
+                    class  : ''
+                },
+            
+                {
+                    name   : '分类',
+                    href   : '/category',    
+                    target : '',
+                    class  : ''
+                },
+            
+                {
+                    name   : '归档',
+                    href   : '/archive',    
+                    target : '',
+                    class  : ''
+                },
+            
+                {
+                    name   : '关于',
+                    href   : '/about',    
+                    target : '',
+                    class  : ''
+                },
+            
+                {
+                    name   : '留言板',
+                    href   : '/comment',    
+                    target : '',
+                    class  : ''
+                },
+            
+        ],
+        MenuLink : [
+            
+                
+                    {
+                        icon : 'icon-weibo', 
+                        url  : ''
+                    },
+                
+                    {
+                        icon : 'icon-wechat', 
+                        url  : ''
+                    },
+                
+                    {
+                        icon : 'icon-qq', 
+                        url  : ''
+                    },
+                
+                    {
+                        icon : 'icon-github', 
+                        url  : 'https://github.com/hhhbaobei'
+                    },
+                
+            
+        ],
+
+        FooterStyle : 2,
+        BottomText  : {
+            icon    : 'like-fill',
+            left    : '人生若只如初见',
+            right   : '何事秋风悲画扇'
+        },
+        ThemeInfo   : true,
+
+        ConsoleList : [
+            
+                
+                    [
+                        
+                            
+                                'Based on cnblogs theme SimpleMemory.',
+                            
+                                '',
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                'SimpleMemory Author:',
+                            
+                                'BNDong',
+                            
+                        
+                    ],
+                
+                    [
+                        
+                            
+                                'Theme:',
+                            
+                                'uestcer',
+                            
+                        
+                    ],
+                
+            
+        ],
+
+        FontIconExtend : '',
+
+        Donate : {
+            paypal  : '',
+            bitcoin : '',
+            alipay  : '',
+            wechat  : ''
+        },
+
+        Code : {
+            style : 'night'
+        },  
+
+        Search : {
+            applicationID : '010C3EANT8',
+            apiKey        : 'c7abab9f11b79102b9aff7fe6d41447d',
+            indexName     : 'Notes',
+            hits          : {
+                page : 10
+            },
+            labels        : {
+                placeholder : '搜索',
+                empty       : '未发现与 「${query}」 相关的内容',
+                stats       : '${hits} 条相关条目，使用了 ${time} 毫秒',
+            }
+        }, 
+
+        Valine : {
+            switch         : true,
+            el             : '.comments-content',
+            appId          : 'srhKtvWPQTWYKh3qX8G8M7v0-gzGzoHsz',
+            appKey         : '8uVSP1q6UlALVC5igYfIfv2h',
+            placeholder    : '你是我一生只会遇见一次的惊喜...',
+            avatar         : 'mm',
+            meta           : 'nick,mail,link',
+            requiredFields : 'nick,mail',
+            pageSize       : 5,
+            lang           : 'zh-cn',
+            visitor        : true,
+            enableQQ       : true
+        },
+
+        Tocbot : {
+            switch                : true,
+            tocSelector           : '.toc',
+            contentSelector       : '.article-body',
+            headingSelector       : 'h1, h2, h3, h4, h5',
+            headingsOffset        : 0,
+            scrollSmooth          : true,
+            scrollSmoothOffset    : -5,
+            positionFixedSelector : '.toc',
+            positionFixedClass    : 'toc-fixed',
+            fixedSidebarOffset    : '',
+        },
+
+        Require : {
+            baseUrl     : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/',
+            waitSeconds : 100
+        },
+
+        Music : {
+            type : 'Meting'
+        },
+        APlayer : {
+            container : '.aplayer',
+            fixed     : true,
+            autoplay  : false,
+            loop      : 'all',
+            order     : 'random',
+            preload   : 'auto',
+            volume    : 0.67,
+            mutex     : true,
+            lrcType   : 3,
+            audio     : [
+                
+                    {
+                        name   : 'aLIEz',
+                        artist : 'mizuki（瑞葵）',
+                        cover  : '/music/cover/aLIEz.jpg',
+                        url    : '/music/song/aLIEz.mp3',
+                        lrc    : '/music/lrc/aLIEz.lrc'
+                    },
+                
+                    {
+                        name   : 'Endless Tears',
+                        artist : 'CLIFF EDGE',
+                        cover  : '/music/cover/Endless Tears.jpg',
+                        url    : '/music/song/Endless Tears.mp3',
+                        lrc    : '/music/lrc/Endless Tears.lrc'
+                    },
+                
+                    {
+                        name   : 'Miracle',
+                        artist : 'Cascada',
+                        cover  : '/music/cover/Miracle.jpg',
+                        url    : '/music/song/Miracle.mp3',
+                        lrc    : '/music/lrc/Miracle.lrc'
+                    },
+                
+                    {
+                        name   : 'Roll The Dice',
+                        artist : '高珊',
+                        cover  : '/music/cover/Roll The Dice.jpg',
+                        url    : '/music/song/Roll The Dice.mp3',
+                        lrc    : '/music/lrc/Roll The Dice.lrc'
+                    },
+                
+                    {
+                        name   : 'See You Again',
+                        artist : 'Charlie Puth, Wiz Khalifa',
+                        cover  : '/music/cover/See You Again.jpg',
+                        url    : '/music/song/See You Again.mp3',
+                        lrc    : '/music/lrc/See You Again.lrc'
+                    },
+                
+                    {
+                        name   : 'Traveling Light',
+                        artist : 'Joel Hanson, Sara Groves',
+                        cover  : '/music/cover/Traveling Light.jpg',
+                        url    : '/music/song/Traveling Light.mp3',
+                        lrc    : '/music/lrc/Traveling Light.lrc'
+                    },
+                
+                    {
+                        name   : '痴心绝对',
+                        artist : '李圣杰',
+                        cover  : '/music/cover/痴心绝对.jpg',
+                        url    : '/music/song/痴心绝对.mp3',
+                        lrc    : '/music/lrc/痴心绝对.lrc'
+                    },
+                
+                    {
+                        name   : '好想大声说爱你',
+                        artist : 'BAAD（バード）',
+                        cover  : '/music/cover/好想大声说爱你.jpg',
+                        url    : '/music/song/好想大声说爱你.mp3',
+                        lrc    : '/music/lrc/好想大声说爱你.lrc'
+                    },
+                
+            ]
+        },
+        Meting : {
+            id       : '3778678', 
+            lrcshow  : false, 
+            server   : 'netease', 
+            type     : 'playlist', 
+            fixed    : true, 
+            autoplay : false, 
+            loop     : 'all', 
+            order    : 'random', 
+            preload  : 'auto', 
+            volume   : 0.67, 
+            mutex    : true
+        },
+
+        LazyLoad : {
+            default : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/image/website/lazyload.svg'
+        },
+  
+        Style : {
+            aplayer          : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/APlayer.css',
+            archive          : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/archive.css',
+            donate           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/donate.css',
+            fancybox         : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/jquery.fancybox.css',
+            footer           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/footer.css',
+            iconfont         : 'https://at.alicdn.com/t/font_1546312_l3yohatebw.css',
+            index            : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/index.css',
+            menuBubble       : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/menu-bubble.css',
+            page             : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/page.css',
+            post             : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/post.css',
+            search           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/search.css',
+            tocbot           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/tocbot.css',
+            normal           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/normal.css',
+            night            : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/night.css',
+            clipboard        : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/css/clipboard.css'
+        },
+
+        Script: {
+            aplayer          : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/APlayer.min.js',
+            config           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/require.config.js',
+            index            : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/index.js',
+            instantSearch    : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/instantsearch.min.js',
+            jQuery           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/jquery-3.4.1.min.js',
+            loading          : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/loading.js',
+            meting           : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/Meting.min.js',
+            iscroll          : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/iscroll.js',
+            require          : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/require.min.js'
+        },
+
+        Font: {
+            LongCang   : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/LongCang.css',
+            Monda      : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/Monda.css',
+            NotoSansSC : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/NotoSansSC.css',
+            Playball   : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/Playball.css',
+            PTMono     : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/PTMono.css',
+            RobotoSlab : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/RobotoSlab.css',
+            Rosario    : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/Rosario.css',
+            UbuntuMono : 'https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/font/UbuntuMono.css'
+        },
+
+        Suffix : {
+            about : '简单地活着, 肆意又精彩.'
+        },
+            
+        Theme : {
+            url  : 'https://github.com/first19326/Hexo-LiveForCode',
+            name : 'Hexo - Live For Code'
+        }  
+    };
+</script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/first19326/cdn@master/static/js/index.js"></script>
+</body>
+</html>
